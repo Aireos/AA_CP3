@@ -1,0 +1,21 @@
+#intiger & float inputs:
+while True:
+  try:
+    variable = float(input(f""))
+  except:
+    continue
+
+#Boolen input:
+while True:
+  input = input(f"").lower
+  if input == yes or true:
+    variable = True
+    break
+  if input == no or false:
+    variable = False
+    break
+
+#List input:
+while True:
+  
+  try:
