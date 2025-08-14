@@ -40,6 +40,9 @@ def login(users, current_user):
             choice = input("User not found. Do you want to register as a new user? (y/n): ").lower()
             if choice == 'y':
                 password = input("Create a password: ")
+                admin = input("Type 'yes' if you are an admin: ")
+                if admin == "yes":
+                    admins.append(username)
                 users.append([username, password, 0])
                 current_user = username
                 print(f"User {current_user} registered and logged in successfully!")
