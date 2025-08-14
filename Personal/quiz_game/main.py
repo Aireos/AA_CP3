@@ -126,6 +126,7 @@ def question_list_choice(qa, titles):
 
 def questionair(qa_list):
     score = 0
+    random.shuffle(qa_list)
 
     for i in qa_list:
         question = i[0]
@@ -150,6 +151,9 @@ def questionair(qa_list):
 
                 stopwatch_start()
                 choice = int(input("answer: "))
+                if choice != 1 and choice != 2:
+                    print("That was not an option!")
+                    continue
                 time_taken = stopwatch_end()
                 break
 
