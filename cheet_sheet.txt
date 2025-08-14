@@ -16,6 +16,3 @@ while True:
     break
 
 #List input:
-while True:
-  
-  try:
