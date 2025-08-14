@@ -41,7 +41,7 @@ def login(users, current_user):
             if choice == 'y':
                 password = input("Create a password: ")
                 admin = input("Type 'yes' if you are an admin: ")
-                if admin == "yes":
+                if admin.lower() == 'yes':
                     admins.append(username)
                 users.append([username, password, 0])
                 current_user = username
