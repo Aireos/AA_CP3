@@ -17,7 +17,7 @@ def quiz_maker(titles, qa):
     print(f"Quiz '{quiz_title}' created!")
     return titles, qa
 
-def login(users, current_user):
+def login(users, current_user, admins):
     while True:
         username = input("Enter username: ")
         user_found = False
@@ -46,10 +46,10 @@ def login(users, current_user):
                 users.append([username, password, 0])
                 current_user = username
                 print(f"User {current_user} registered and logged in successfully!")
-                return users, current_user
+                return users, current_user, admins
             else:
                 print("Login failed. Returning to main menu.")
-                return users, current_user
+                return users, current_user, admins
 
 def question_list_choice(qa, titles):
     num_titles = 0
@@ -145,7 +145,7 @@ def main():
                 print(f"Logging out {current_user}.")
                 current_user = None
             else:
-                users, current_user = login(users, current_user)
+                users, current_user, admins = login(users, current_user, admins)
         elif choice == 4:
             if current_user:
                 print(f"Goodbye, {current_user}!")
