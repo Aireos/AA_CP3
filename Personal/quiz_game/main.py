@@ -151,9 +151,11 @@ def questionair(qa_list):
 
                 stopwatch_start()
                 choice = int(input("answer: "))
+
                 if choice != 1 and choice != 2:
                     print("That was not an option!")
                     continue
+
                 time_taken = stopwatch_end()
                 break
 
@@ -217,6 +219,7 @@ def main():
                         if current_score > user_entry[2]:
                             user_entry[2] = current_score
                             print("New personal high score!")
+                            print(user_entry[2])
 
                         break
 
