@@ -3,6 +3,7 @@
 import random
 import json
 import time
+import tkinter as tk
 
 def qa_export(qa):
 
@@ -125,52 +126,50 @@ def question_list_choice(qa, titles):
 
 
 def questionair(qa_list):
-    score = 0
+    score=0
     random.shuffle(qa_list)
 
-    for i in qa_list:
+    for i in range(min(10, len(qa_list))):
+        i = qa_list[i]
         question = i[0]
         answer = i[1]
         wrong_answer = i[2]
-        print(question)
+        root = tk.Tk()
+        root.title("Quiz game")
+        root.geometry("1000x250+200+200")
+        question_label = tk.Label(root, text=question, font=("Arial", 16))
+        question_label.pack(pady=20)
+        button_one = None
+        button_two = None
+        randomizer = random.randint(0,1)
 
-        while True:
+        def answer_checker(selected,correct):
+            nonlocal score
+            stopwatch_start()
 
-            try:
-                randomizer = random.randint(0, 1)
+            if selected == correct:
+                score+=10
+                print("You got it!")
 
-                if randomizer == 0:
-                    print(f"1. {answer}")
-                    print(f"2. {wrong_answer}")
-                    answer_option = 1
-
-                if randomizer == 1:
-                    print(f"1. {wrong_answer}")
-                    print(f"2. {answer}")
-                    answer_option = 2
-
-                stopwatch_start()
-                choice = int(input("answer: "))
-
-                if choice != 1 and choice != 2:
-                    print("That was not an option!")
-                    continue
-
+            else:
                 time_taken = stopwatch_end()
-                break
+                score-=time_taken
+                print("Better luck next time!")
 
-            except:
-                print("That was not an option!")
-                continue
-
-        if choice == answer_option:
-            score += 10
-            print("You got it!")
+            root.destroy()
+        
+        if randomizer==0:
+            button_one = tk.Button(root, text=answer, command=lambda: answer_checker(1, 1), font=("Arial", 12))
+            button_two = tk.Button(root, text=wrong_answer, command=lambda: answer_checker(2, 1), font=("Arial", 12))
 
         else:
-            score -= time_taken
-            print("Better luck next time!")
-
+            button_one = tk.Button(root, text=answer, command=lambda: answer_checker(1, 2), font=("Arial", 12))
+            button_two = tk.Button(root, text=wrong_answer, command=lambda: answer_checker(2, 2), font=("Arial", 12))
+        
+        button_one.pack(pady=10)
+        button_two.pack(pady=10)
+        root.mainloop()
+            
     print(f"You're score was: {score}")
     return score
 
