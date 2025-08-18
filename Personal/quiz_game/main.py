@@ -48,11 +48,13 @@ def quiz_maker(titles, qa):
     new_quiz = []
 
     while True:
+        #input for the question
         question = input("Enter a question (or type 'done' to finish): ")
 
         if question.lower() == 'done':
             break
-
+        
+        #inputs for the possible answers
         correct_answer = input("Enter the correct answer: ")
         wrong_answer_1 = input("Enter an incorrect answer 1: ")
         wrong_answer_2 = input("Enter an incorrect answer 2: ")
@@ -60,6 +62,7 @@ def quiz_maker(titles, qa):
         new_quiz.append([question, correct_answer, wrong_answer_1, wrong_answer_2, wrong_answer_3])
         print("Question added!")
 
+    #adding the quiz to the quiz library
     qa.append(new_quiz)
     print(f"Quiz '{quiz_title}' created!")
     return titles, qa
@@ -74,6 +77,7 @@ def login(users, current_user, admins):
         user_data = None
 
         for user_entry in users:
+
             if user_entry[0] == username:
                 user_found = True
                 user_data = user_entry
@@ -142,6 +146,7 @@ def show_question(question, correct_answer, all_answers, score):
         result['selected'] = ans
         root.quit()
 
+    #starting up and running the tkinter pop-up
     root = tk.Tk()
     root.title("Quiz game")
     root.geometry("1000x350+200+200")
@@ -149,9 +154,11 @@ def show_question(question, correct_answer, all_answers, score):
     score_label.pack(pady=10)
     question_label = tk.Label(root, text=question, font=("Arial", 16))
     question_label.pack(pady=20)
+
     for answer_text in all_answers:
         button = tk.Button(root, text=answer_text, command=lambda ans=answer_text: on_answer(ans), font=("Arial", 12))
         button.pack(pady=10)
+
     root.mainloop()
     root.destroy()
     return result['selected']
