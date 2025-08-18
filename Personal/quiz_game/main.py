@@ -93,7 +93,7 @@ def question_list_choice(qa, titles):
             print("That was not an option!")
             continue
 
-def show_question(question, correct_answer, all_answers):
+def show_question(question, correct_answer, all_answers, score):
     result = {'selected': None, 'correct': correct_answer}
     def on_answer(ans):
         result['selected'] = ans
@@ -101,7 +101,9 @@ def show_question(question, correct_answer, all_answers):
 
     root = tk.Tk()
     root.title("Quiz game")
-    root.geometry("1000x300+200+200")
+    root.geometry("1000x350+200+200")
+    score_label = tk.Label(root, text=f"Current Score: {score}", font=("Arial", 14))
+    score_label.pack(pady=10)
     question_label = tk.Label(root, text=question, font=("Arial", 16))
     question_label.pack(pady=20)
     for answer_text in all_answers:
@@ -123,14 +125,12 @@ def questionair(qa_list):
         random.shuffle(all_answers)
 
         stopwatch_start()
-        selected_answer = show_question(question, correct_answer, all_answers)
+        selected_answer = show_question(question, correct_answer, all_answers, score)
         if selected_answer == correct_answer:
             score += 10
-            print("You got it!")
         else:
             time_taken = stopwatch_end()
             score -= time_taken
-            print(f"Better luck next time! Time penalty: {time_taken}")
 
     print(f"Your score was: {score}")
     return score
