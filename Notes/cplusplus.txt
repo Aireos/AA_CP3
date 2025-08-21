@@ -17,3 +17,4 @@ desktop applications
 How do I set up my VS Code for C++?:
 1. have the c/c++ extension
 2.have a compiler downloaded
+3. :|
