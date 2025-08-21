@@ -1,18 +1,33 @@
-#intiger & float inputs:
+#float inputs:
 while True:
   try:
     variable = float(input(f""))
   except:
     continue
 
-#Boolen input:
+#intiger inputs:
+while True:
+  try:
+    variable = int(input(f""))
+  except:
+    continue
+
+#boolen input:
 while True:
   input = input(f"").lower
-  if input == yes or true:
+  if input == "yes" or "true" or "t":
     variable = True
     break
-  if input == no or false:
+  if input == "no" or "false" or "f":
     variable = False
     break
 
 #List input:
+while True:
+  input = input(f"")
+  try:
+    variable = [item.strip() for item in input.split(',')]
+  except:
+    continue
+    
+#

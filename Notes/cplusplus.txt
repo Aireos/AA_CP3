@@ -1,0 +1,20 @@
+Alexander Anderson, Why C++
+
+What type of programming language is C++?:
+It is a static type language, we need to tell it the data type
+It is a compiled language, it does it all at once, not line by line
+It is a low-level language, meaning we can control it more
+
+When was C++ created? and Why?:
+It was created in 1979
+It was created because C didn't have a lot of adaptability, so C++ allowed it to do more things
+
+What types of programs are created with C++?:
+consle games
+operating systems
+desktop applications
+
+How do I set up my VS Code for C++?:
+1. 
+2.
+3.
