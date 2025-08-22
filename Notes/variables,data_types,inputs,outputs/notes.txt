@@ -1,0 +1,46 @@
+Alexander Anderson, Variables, Data Types, Inputs and Outputs notes
+
+How are static and dynamically typed variables different?
+static: is decalred and fixed at compile time
+dynamically: data type is determined at run time based on its value
+
+REMINDER: What is the difference between instantiating and declaring a variable?
+instantiating: making the variable
+declaring: defining the value of the variable
+
+What are all the data types,number of bytes they take,and the things they include?
+short|2bytes|-32,768-32,768
+int       |4bytes|-26-26
+long      |4bytes|-26-26
+longlong  |8bytes|big #'s
+floats    |4bytes|3.4E38
+doubles   |8bytes|1.7E308
+longdouble|8bytes|3.4E932
+bool      |1bytes|true/false
+char      |1bytes|single letter
+
+What case type should be used for c++ variables?
+snake case
+
+What is the C++ standard library?
+Repository of all of the addons that make running your code easier
+
+How do you access the standard library?
+#include <specific library name>
+
+How do you create an output in C++?
+std::cout << variable;
+
+How do you create an input in C++?
+cout << "Tell me your age: ";
+int age;
+cin >> age;
+
+What is the stream in C++?
+a object-orianted abstraction
+
+What is a constant?
+a variable we can not change the value or type of
+
+Why do we write constants?
+so that we don't accidently change a variable we do not want to change
