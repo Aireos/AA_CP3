@@ -17,4 +17,5 @@ int main(){
     celsius = (fahrenheit - 32) * (5.0/9.0);
     //printing the conversion
     cout << fahrenheit << " in fahrenheit is equal to " << celsius << " in celsius.";
+    return 0;
 }
