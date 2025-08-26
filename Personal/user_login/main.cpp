@@ -13,7 +13,11 @@ int main(){
     string username;
     cin >> username;
     if (admins.count(username) > 0) {
-        cout << "BOO!";
+        cout << "Hello Admin " << username;
+    } else if (users.count(username) > 0) {
+        cout << "Welcome back " << username;
+    } else {
+        cout << "Lets get you signed up " << username;
     }
     return 0;
-}
+}   
