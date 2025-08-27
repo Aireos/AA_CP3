@@ -3,11 +3,16 @@
 #include <iostream>
 using namespace std;
 
-string fam[10] = {"Cora","Eric","Alex","Katie","Anderew","Vienna","Tia","Treyson","Xavier","Jake"};
+string fam[5] = {"Micheal","Starli","Alex","Mara","Madi"};
+string sibs[3] = {"Alex","Mara","Madi"};
 
 int main(){
-    for(int i=0;size(fam);i++)
-        cout << fam[i] << "LaRose\n";
+    for(int i=0;i <size(fam);i++){
+        cout << fam[i] << " Anderson\n";
+        if (fam[i] == sibs[i-2]){
+            cout << "They are my sibling!\n";
+        }
+    }
     return 0;
 }
 
