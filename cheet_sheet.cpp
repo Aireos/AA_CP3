@@ -12,15 +12,11 @@ using namespace std;
 //Sorter:
 
 void sorter(int a[],int s){
-    for (int i=0;i<s-1;i++){
-        for (int j=0;j<s-i-1;j++){
-            if (a[j]>a[j+1]) {
-                int b=a[j];
-                a[j]=a[j+1];
-                a[j + 1]=b;
-            }
-        }
-    }
+    //first variable
+    a[0];
+    //last variable
+    a[s-1];
+
 }
 
 int main() {
