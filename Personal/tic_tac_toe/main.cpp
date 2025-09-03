@@ -54,9 +54,9 @@ int main() {
     cout <<endl<<"three x's in a row and you win! But if the computer gets three o's in a row...\n\n";
     for (int i = 0; i < 5; i++) {
 
-        cout << "|" << board[0][0] << "|" << board[0][1] << "|" << board[0][2] << "|\n";
-        cout << "|" << board[1][0] << "|" << board[1][1] << "|" << board[1][2] << "|\n";
-        cout << "|" << board[2][0] << "|" << board[2][1] << "|" << board[2][2] << "|\n";
+        for (int i = 0;i<3;i++){
+            cout << "|" << board[i][0] << "|" << board[i][1] << "|" << board[i][2] << "|\n";
+        }
 
         //input asking for where they want to place a x at
         cout << "Where do you want to put an X? (type a number from 1-9): ";
