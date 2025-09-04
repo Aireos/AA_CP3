@@ -57,22 +57,7 @@ void uncompacted_sorter(int a[], int s) {
 }
 
 //Compacted sorter
-void uncompacted_sorter(int a[], int s) {
-    int m = 0;
-    for (int i = 0; i < s; i++) {
-        m += a[i];
-    }
-    m = m / s;
-    int next_pos = 0;
-    for (int i = 0; i < s; i++) {
-        if (a[i] < m) {
-            int temp = a[i];
-            a[i] = a[next_pos];
-            a[next_pos] = temp;
-            next_pos++;
-        }
-    }
-    for (int i=0;i<next_pos;i++){for(int j=0;j<next_pos-i-1;j++){if (a[j]>a[j+1]){int b=a[j];a[j]=a[j+1];a[j+1]=b;}}}for(int i=next_pos;i<s;i++){for(int j=next_pos;j<s-1-(i-next_pos);j++){if(a[j]>a[j+1]){int temp = a[j];a[j] = a[j + 1];a[j+1]=temp;}}}}
+void sorter(int a[],int s){int m=0;for(int i=0;i<s;i++){m+=a[i];}m=m/s;int p = 0;for(int i=0;i<s;i++){if(a[i]<m){int b=a[i];a[i]=a[p];a[p]=b;p++;}}for(int i=0;i<p;i++){for(int j=0;j<p-i-1;j++){if(a[j]>a[j+1]){int b=a[j];a[j]=a[j+1];a[j+1]=b;}}}for(int i=p;i<s;i++){for(int j=p;j<s-1-(i-p);j++){if(a[j]>a[j+1]){int b=a[j];a[j]=a[j+1];a[j+1]=b;}}}}
 
 int main() {
     int array[] = {3, 2, 1};
