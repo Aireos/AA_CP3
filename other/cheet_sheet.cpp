@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <utility>
+#include <memory>
 using namespace std;
 
 //Sorter:

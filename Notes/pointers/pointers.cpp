@@ -10,6 +10,9 @@
 using namespace std;
 
 int numbers[] = {4,2,6,8,14,24,65};
+int* sanity = new int[5];
+int entries = 0;
+
 void divide(int* list, int size){
     for(int i; i < size; i++){
         list[i] = list[i]/2;
@@ -18,15 +21,46 @@ void divide(int* list, int size){
     cout << "this is my numbers list location " << list << endl;
     cout << "the first item in my numbers list is " << *list << endl;
 }
+
 int main(){
     int num = 4;
     int* pnum = &num;
+    int day = 6;
+    int* pday = &day;
 
     const double pi = 3.141592;
 
     cout << "The number is " << num << endl;
     cout << "The location of num is " << pnum << endl;
     divide(numbers,size(numbers));
+
+    cout << (pnum == pday) << endl;
+
+    if(pnum != nullptr){
+        cout << *pnum << endl;
+        pnum++;
+    }
+    cout << *pnum << endl;
+
+    while (true){
+        cout << "Number: ";
+        cin >> sanity[entries];
+        if(cin.fail()){
+            int* temp = new int[10];
+            for(int i=0;i < entries; i++){
+                temp[i] = sanity[i];
+            }
+            delete[] sanity;
+            break;
+        }
+        entries++;
+    }
+
+    for (int i=0; i < entries; i++){
+        cout << sanity[i] << endl;
+    }
+
+    delete[] sanity;
 
     return 0;
 }
@@ -56,16 +90,18 @@ int main(){
 // so you can use data outside the function and being able to only do certain things with it
 
 // How do you compare pointers?
-// 
+// ==,<,>,=<,=>
 
 // What is dynamic memory allocation?
-// it is when you use diffrent types of pointers to usethe memory better
+// it is when you use diffrent types of pointers to use the memory better and be able to change the memory
 
 // What is the Stack?
-// 
+// An area of memory used for managing function calls, loval variables, and control flow. It is managed by the compiler for quick allocation of memory.
 
 // What is the Heap?
-// 
+// An area of memory used for dynamic memory. Stores data if the size is unknown at the time of compiling. Memory must be manullty managed by the program. Used for flexible long-live storage of complexe data structures, objects, and large files.
 
 // What are smart pointers?
-// 
+// two types:
+// unique pointers: owns that piece of memory, using a class
+// shared pointer: multipole pointers pointing at the same thing, also a genaric class
