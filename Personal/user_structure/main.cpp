@@ -18,18 +18,22 @@ struct User {
 };
 
 int main(){
-    string users[10][3] = {{"Jerry", "2", "t"}, {"Bob", "5", "f"}, {"Snap", "8", "t"}, {"Crackle", "8", "f"}, {"Pop", "8", "t"}, {"Larose", "8", "t"}, {"Alex", "8", "t"}, {"Wakefeild", "8", "t"}, {"Nick", "8", "t"}, {"Jonas", "8", "t"}};
+    bool found = false;
+    vector<User> users = {{"Jerry", "2", true}, {"Bob", "5", false}, {"Snap", "8", true}, {"Crackle", "8", false}, {"Pop", "8", true}, {"Larose", "8", false}, {"Alex", "8", true}, {"Wakefeild", "8", false}, {"Nick", "8", true}, {"Jonas", "8", false}};
     User newUser;
     cout << "Pick your username: ";
     cin >> newUser.name;
-    for(auto user: users){
-        if(user[0] == newUser.name){
+    for(const auto user: users){
+        if(user.name == newUser.name){
             cout << "Welcome back, ";
-            if (newUser.admin = true){
-                cout << "Admin " << newUser.name << endl;
+            if (user.admin) {
+                cout << "Admin ";
             }
+            cout << newUser.name << endl;
+            found = true;
         }
     }
+    if(!found){}
     cout << "Pick your password: ";
     cin >> newUser.password;
     cout << "Are you a admin?(t or f): ";

@@ -6,16 +6,16 @@
 
 using namespace std;
 
+struct Date {
+    short year = 100;
+    short month = 10;
+    short day = 20;
+};
+
 struct Movie {
     string title;
-    int releaseDate;
+    Date releaseDate;
     bool isPopular = true;
-
-    bool equals(Movie movie){
-        if(title == movie.title){
-            cout << "AHHHHHHH";
-        }
-    }
 };
 
 struct Customer {
@@ -24,10 +24,22 @@ struct Customer {
     string email;
 };
 
-struct Date {
-    short year = 100;
-    short day = 20;
-};
+bool operator==(const Movie& first, const Movie& second){
+    if(first.title == second.title &&
+        first.releaseDate.year == second.releaseDate.year &&
+        first.releaseDate.month == second.releaseDate.month &&
+        first.releaseDate.day == second.releaseDate.day &&
+        first.isPopular == second.isPopular){
+            return true;
+        }else{
+            return false;
+        }
+}
+
+ostream& operator<<(ostream& stream, Movie& movie){
+    stream << movie.title;
+    return stream;
+}
 
 int main(){
     // Movie movie;
@@ -40,15 +52,20 @@ int main(){
 
     vector<Movie> movies;
 
+    Movie movie1 = {"Terminator", 1987};
+    Movie movie2 = {"Terminator 2", 1987};
+
     for (auto movie: movies){
         auto [title, releaseDate, isPopular] {movie};
         cout << "Movie Title: " << title << endl;
-        cout << "Movie Year: " << releaseDate << endl;
+        cout << "Movie Year: " << releaseDate.year << endl;
+        cout << "Movie Popular: " << isPopular << endl;
+    }
+    if(movie1 == movie2){
+        cout << movie1 << "Equal" << endl;
     }
 
-    Movie movie1 = {"Terminator", 1984};
-    Movie movie2 = {"Terminator", 1984};
-    movie1.equals(movie2);
+    // movie1.equals(movie2);
 
     Customer customer;
     customer.id = 1324;
@@ -77,4 +94,4 @@ int main(){
 // variable_name.info
 
 // How do you overload an operator
-// 
+// by defining a variable in a operator that is not a basic c++ symbol and tell it what to do
