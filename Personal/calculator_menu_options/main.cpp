@@ -27,11 +27,10 @@ double Division(double x, double y){
 };
 
 enum Action{
-    List = 1,
-    Add,
-    Minus,
-    Times,
-    Divide,
+    Add = 1,
+    Minus = 2,
+    Times = 3,
+    Divide = 4,
     Update
 };
 
@@ -39,7 +38,7 @@ int main(){
     while(true){
         int input;
 
-        cout <<
+        cout << endl <<
         "1: Addition" << endl <<
         "2: Subtraction" << endl <<
         "3: Multiplication" << endl <<
@@ -49,6 +48,7 @@ int main(){
         cin >> input;
         double x;
         double y;
+        cout << endl;
         if (input == Action::Add){
             cout << "First variable: ";
             cin >> x;
@@ -77,7 +77,7 @@ int main(){
             cout << "Goodbye!";
             return 0;
         }else{
-            cout << "Womp womp, not a option";
+            cout << "Not a option.\n";
         }
     }
 }
