@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <utility>
+#include <ctime>
 using namespace std;
 
 bool winner_checker(string board[3][3]) {
