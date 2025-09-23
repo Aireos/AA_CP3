@@ -39,10 +39,6 @@ Pokemen getRandomWildPokemon(const vector<Pokemen>& pokedex) {
 }
 
 void battle(vector<Pokemen>& inventory, const vector<Pokemen>& pokedex, int choice){
-    if (inventory.empty()) {
-        cout << "You have no Pokemon to battle with!" << endl;
-        return;
-    }
     if(choice == 1){
         cout << "Welcome to the battle stadium! Pick your fighter.\n";
         for(size_t i = 0; i < inventory.size(); i++){
@@ -64,40 +60,44 @@ void battle(vector<Pokemen>& inventory, const vector<Pokemen>& pokedex, int choi
         cout << "A wild " << wildPokemon.name << " appears!" << endl;
         cout << "You chose " << fighter.name << "." << endl;
 
-        while (fighter.current_hp > 0 && wildPokemon.current_hp > 0) {
-            cout << fighter.name << " (HP: " << fighter.current_hp << ") vs " << wildPokemon.name << " (HP: " << wildPokemon.current_hp << ")" << endl;
-            
-            cout << fighter.name << " can do the following attacks, which one do you want it to do?\n";
-            for(size_t i = 0; i < fighter.attacks.size(); i++){
-                cout << (i+1) << ". " <<"Damage: "<<fighter.attacks[i].damage <<" Amount left: "<<fighter.attacks[i].amount << endl;
-            }
-            cout << "Choice: ";
-            int attack_choice;
-            cin >> attack_choice;
-            cout << endl;
+        if(fighter.current_hp <= 0){
+            cout << "You cannot fight with a dead pokemon!\n";
+        }else{
+            while (fighter.current_hp > 0 && wildPokemon.current_hp > 0) {
+                cout << fighter.name << " (HP: " << fighter.current_hp << ") vs " << wildPokemon.name << " (HP: " << wildPokemon.current_hp << ")" << endl;
+                
+                cout << fighter.name << " can do the following attacks, which one do you want it to do?\n";
+                for(size_t i = 0; i < fighter.attacks.size(); i++){
+                    cout << (i+1) << ". " <<"Damage: "<<fighter.attacks[i].damage <<" Amount left: "<<fighter.attacks[i].amount << endl;
+                }
+                cout << "Choice: ";
+                int attack_choice;
+                cin >> attack_choice;
+                cout << endl;
 
-            if (attack_choice > 0 && attack_choice <= fighter.attacks.size() && fighter.attacks[attack_choice - 1].amount > 0) {
-                int damage = fighter.attacks[attack_choice - 1].damage;
-                fighter.attacks[attack_choice - 1].amount--;
-                wildPokemon.current_hp -= damage;
-                cout << fighter.name << " used an attack dealing " << damage << " damage to " << wildPokemon.name << "!" << endl;
-            } else {
-                cout << "Invalid attack choice or no uses left. You miss your turn." << endl;
-            }
+                if (attack_choice > 0 && attack_choice <= fighter.attacks.size() && fighter.attacks[attack_choice - 1].amount > 0) {
+                    int damage = fighter.attacks[attack_choice - 1].damage;
+                    fighter.attacks[attack_choice - 1].amount--;
+                    wildPokemon.current_hp -= damage;
+                    cout << fighter.name << " used an attack dealing " << damage << " damage to " << wildPokemon.name << "!" << endl;
+                } else {
+                    cout << "Invalid attack choice or no uses left. You miss your turn." << endl;
+                }
 
-            if (wildPokemon.current_hp <= 0) {
-                cout << wildPokemon.name << " fainted! You won!" << endl;
-                break;
-            }
+                if (wildPokemon.current_hp <= 0) {
+                    cout << wildPokemon.name << " fainted! You won!" << endl;
+                    break;
+                }
 
-            int wildAttackIndex = rand() % wildPokemon.attacks.size();
-            int wildDamage = wildPokemon.attacks[wildAttackIndex].damage;
-            fighter.current_hp -= wildDamage;
-            cout << wildPokemon.name << " attacked, dealing " << wildDamage << " damage to " << fighter.name << "!" << endl;
+                int wildAttackIndex = rand() % wildPokemon.attacks.size();
+                int wildDamage = wildPokemon.attacks[wildAttackIndex].damage;
+                fighter.current_hp -= wildDamage;
+                cout << wildPokemon.name << " attacked, dealing " << wildDamage << " damage to " << fighter.name << "!" << endl;
 
-            if (fighter.current_hp <= 0) {
-                cout << fighter.name << " fainted! You lost." << endl;
-                break;
+                if (fighter.current_hp <= 0) {
+                    cout << fighter.name << " fainted! You lost." << endl;
+                    break;
+                }
             }
         }
     }else if(choice == 2){
@@ -170,18 +170,22 @@ int main() {
             }
 
         }else if (input == Menu::Battle) {
-            cout << endl <<
-            "1. Wild Pokemon\n" <<
-            "2. Trainer\n" <<
-            "Selection: ";
-            int choice;
-            cin >> choice;
-            cout << endl;
-
-            if(choice == Battle::Wild || choice == Battle::Trainer){
-                battle(inventory, Pokedex, choice);
+            if (inventory.empty()) {
+            cout << "You have no Pokemon to battle with!" << endl;
             }else{
-                cout << "Not an option.\n";
+                cout << endl <<
+                "1. Wild Pokemon\n" <<
+                "2. Trainer\n" <<
+                "Selection: ";
+                int choice;
+                cin >> choice;
+                cout << endl;
+
+                if(choice == Battle::Wild || choice == Battle::Trainer){
+                    battle(inventory, Pokedex, choice);
+                }else{
+                    cout << "Not an option.\n";
+                }
             }
         }else if (input == Menu::Heal_Pokemon) {
             healPokemon(inventory);
