@@ -60,6 +60,7 @@ float get_type_effectiveness(const string& attacker_type, const string& defender
         if (defender_type == "sky") return 0.5f;
     }
     return 1.0f;
+}
 
 void level_up(pokemen& p) {
     p.level++;
