@@ -1,3 +1,5 @@
+// AKA Pokemon Battle
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -44,14 +46,14 @@ string get_random_name(vector<string>& names) {
     return names[random_index];
 }
 
-float get_type_effectiveness(const string& attacker_type, const string& defender_type) {
+float get_type_effectiveness(string& attacker_type, string& defender_type) {
     if (attacker_type == "space") {
         return 2.0f;
     } else if (attacker_type == "useless") {
         return 0.5f;
     } else if (attacker_type == "water") {
-        if (defender_type == "ground") return 2.0f;
-        if (defender_type == "sky") return 0.5f;
+        if (defender_type == "sky") return 2.0f;
+        if (defender_type == "ground") return 0.5f;
     } else if (attacker_type == "sky") {
         if (defender_type == "ground") return 2.0f;
         if (defender_type == "water") return 0.5f;
@@ -98,7 +100,7 @@ void battle_logic(vector<pokemen>& inventory, vector<pokemen>& pokedex, vector<s
         pokemen& fighter = inventory[fighter_choice - 1];
         pokemen wild_pokemon = get_random_wild_pokemon(pokedex);
         
-        wild_pokemon.level = (rand() % 5) + 1;
+        wild_pokemon.level = (rand()% 5) + 1;
         wild_pokemon.max_hp += (wild_pokemon.level - 1) * 10;
         wild_pokemon.current_hp = wild_pokemon.max_hp;
         for (size_t i = 0; i < wild_pokemon.attacks.size(); i++) {
@@ -182,7 +184,7 @@ void battle_logic(vector<pokemen>& inventory, vector<pokemen>& pokedex, vector<s
         pokemen wild_pokemon = get_random_wild_pokemon(pokedex);
         string trainer_name = get_random_name(names);
         
-        wild_pokemon.level = (rand() % 5) + 1;
+        wild_pokemon.level = (rand()% 5) + 1;
         wild_pokemon.max_hp += (wild_pokemon.level - 1) * 10;
         wild_pokemon.current_hp = wild_pokemon.max_hp;
         for (size_t i = 0; i < wild_pokemon.attacks.size(); i++) {
@@ -252,7 +254,7 @@ void battle_logic(vector<pokemen>& inventory, vector<pokemen>& pokedex, vector<s
 
 void pokemon_heal(vector<pokemen>& inventory) {
     if (inventory.empty()) {
-        cout << "you have no pokemon to heal." << endl;
+        cout << "you have no pokemon to heal or regain attacks for." << endl;
         return;
     }
     cout << "healing all your pokemon..." << endl;
@@ -260,6 +262,13 @@ void pokemon_heal(vector<pokemen>& inventory) {
         pokemon.current_hp = pokemon.max_hp;
     }
     cout << "your pokemon have been healed!" << endl;
+    cout << "Resting your pokemon for the next battle..." << endl;
+    for (auto& pokemon : inventory) {
+        for(int i = 0; i < 3; i++){
+            pokemon.attacks[i].amount = i+1;
+        }
+    }
+    cout << "your pokemon have been rejuvenated and their attacks have been restored!" << endl;
 }
 
 int main() {
@@ -272,11 +281,12 @@ int main() {
         cout << endl <<
             "1. explore\n" <<
             "2. battle\n" <<
-            "3. heal_pokemon\n" <<
+            "3. heal and rejuvenate pokemon\n" <<
             "4. exit\n" <<
             "selection: ";
         int choice;
         cin >> choice;
+        cout << endl;
 
         if (cin.fail()) {
             cout << "enter a number from 1 to 4 next time." << endl;
@@ -289,7 +299,7 @@ int main() {
             int random_index = rand() % pokedex.size();
             pokemen found_pokemon = pokedex[random_index];
             
-            found_pokemon.level = (rand() % 5) + 1;
+            found_pokemon.level = (rand()% 5) + 1;
             found_pokemon.max_hp += (found_pokemon.level - 1) * 10;
             found_pokemon.current_hp = found_pokemon.max_hp;
             for (size_t i = 0; i < found_pokemon.attacks.size(); i++) {

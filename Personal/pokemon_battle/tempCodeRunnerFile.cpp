@@ -1,0 +1,1 @@
+fighter.attacks[attack_choice - 1].amount--;
