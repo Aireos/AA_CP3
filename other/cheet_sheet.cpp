@@ -8,6 +8,7 @@
 #include <ctime>
 #include <utility>
 #include <memory>
+#include <fstream>
 using namespace std;
 
 //Sorter:
@@ -82,4 +83,28 @@ int main() {
     std::cout << std::endl;
 
     return 0;
+}
+
+// basic output and input to text file
+int main(){
+    // pulling from file
+    ifstream ofile("high_scores.txt");
+    if (!ofile.is_open()) {
+        cout << "Error opening file!" << std::endl;
+        return 1;
+    }
+    string line;
+    while (getline(ofile, line)) {
+        cout << line << endl;
+    }
+    ofile.close();
+
+    //inputing to file
+    ofstream ifile("high_scores.txt");
+    if (!ifile.is_open()) {
+        cout << "Error opening file!" << std::endl;
+        return 1;
+    }
+    ifile << "hello!\nhi!";
+    ifile.close();
 }
