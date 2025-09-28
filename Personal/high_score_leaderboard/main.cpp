@@ -1,5 +1,6 @@
 // AKA High Score Leaderboard
 
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -10,59 +11,52 @@
 #include <fstream>
 using namespace std;
 
-int string_to_intiger(string& s) {
-    int result = 0;
-    for (char c : s) {
-        if (c >= '0' && c <= '9') {
-            result = result * 10 + (c - '0');
-        } else {
-            cout << "Error getting scores from file!" << endl;
-            return string("error");
-        }
-    }
-    return result;
-}
-
-int main(){
-    ifstream ofile("high_scores.txt");
-    if (!ofile.is_open()) {
-        cout << "Error opening file!" << endl;
-        return 1;
-    }
-    string string_line;
+int main() {
     vector<int> file;
-    while (getline(ofile, string_line)) {
-        int score = string_to_intiger(string_line);
-        try{
-            file.push_back(score);
-        }catch(...){
-            return 1;
+    string string_line;
+    ifstream ifile("high_scores.txt");
+
+    if (ifile.is_open()) {
+        while (getline(ifile, string_line)) {
+            try {
+                int score = stoi(string_line);
+                file.push_back(score);
+            } catch (...){
+                cout << "Error pulling scores from file.";
+                return 1;
+            }
         }
+        ifile.close();
     }
-    ofile.close();
 
     cout << "What score did you get?: ";
     int input;
     cin >> input;
     cout << endl;
-    if(cin.fail()){
-        cout << "That was not a number!";
+    if (cin.fail()) {
+        cout << "That was not a number!" << endl;
         return 1;
     }
 
     file.push_back(input);
-    for(int i = 0; i < file.size(); i++){
-        cout << file[i];
+    
+    sort(file.rbegin(), file.rend());
+
+    cout << "High scores:" << endl;
+    for (int i = 0; i < file.size(); i++) {
+        cout << file[i] << endl;
     }
 
-    ofstream ifile("high_scores.txt");
-    if (!ifile.is_open()) {
-        cout << "Error opening file!" << endl;
+    ofstream ofile("high_scores.txt");
+
+    if (!ofile.is_open()) {
+        cout << "Error saving to file." << endl;
         return 1;
     }
-    for(int i = 0; i < size(file); i++){
-        ifile << file[i] << endl;
+    for (int score : file) {
+        ofile << score << endl;
     }
-    ifile.close();
+    ofile.close();
+
     return 0;
 }
