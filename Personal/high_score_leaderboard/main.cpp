@@ -11,10 +11,16 @@
 #include <fstream>
 using namespace std;
 
+enum menu {
+    add = 1,
+    display = 2,
+    exit = 3
+};
+
 int main() {
     vector<int> file;
     string string_line;
-    ifstream ifile("high_scores.txt");
+    fstream ifile("high_scores.csv");
 
     if (ifile.is_open()) {
         while (getline(ifile, string_line)) {
@@ -32,9 +38,9 @@ int main() {
     cout << "What score did you get?: ";
     int input;
     cin >> input;
-    cout << endl;
+    cout << '\n';
     if (cin.fail()) {
-        cout << "That was not a number!" << endl;
+        cout << "That was not a number!" << '\n';
         return 1;
     }
 
@@ -42,19 +48,19 @@ int main() {
     
     sort(file.rbegin(), file.rend());
 
-    cout << "High scores:" << endl;
+    cout << "High scores:" << '\n';
     for (int i = 0; i < file.size(); i++) {
-        cout << file[i] << endl;
+        cout << file[i] << '\n';
     }
 
-    ofstream ofile("high_scores.txt");
+    fstream ofile("high_scores.csv");
 
     if (!ofile.is_open()) {
-        cout << "Error saving to file." << endl;
+        cout << "Error saving to file." << '\n';
         return 1;
     }
     for (int score : file) {
-        ofile << score << endl;
+        ofile << score << '\n';
     }
     ofile.close();
 
