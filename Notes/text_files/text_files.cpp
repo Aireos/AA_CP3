@@ -10,6 +10,13 @@
 #include <fstream>
 #include <iomanip>
 using namespace std;
+using namespace std;
+
+struct Movie {
+    int id;
+    string title;
+    int year;
+};
 
 int getNumber(string promt){
     int num;
@@ -28,15 +35,37 @@ int getNumber(string promt){
 int main(){
     int first = getNumber("First: \n");
     int second = getNumber("First: \n");
-    cout << "you entered " << first << " and " << second;
+    cout << "you entered " << first << " and " << second << endl;
 
-    ofstream file;
-    file.open("data.csv");
-    if(file.is_open()){
-        file << "id, title, year\n1, Terminator 1, 1984\n2, Terminator 1, 1991";
-        file.close();
+    ofstream ofile;
+    ofile.open("data.csv");
+    if(ofile.is_open()){
+        ofile << "1, Terminator 1, 1984\n2, Terminator 1, 1991";
+        ofile.close();
     }
 
+    vector<string> all_info;
+    ifstream ifile;
+    ifile.open("data.csv");
+    if(ifile.is_open()){
+        string str;
+        while(getline(ifile, str, ',')){
+            all_info.push_back(str);
+        }
+        string stri;
+        vector<Movie> movies;
+        while(getline(ifile, stri)){
+            Movie movie;
+            movie.id = stoi(all_info[0]);
+            movie.title = all_info[1];
+            movie.year = stoi(all_info[2]);
+            movies.push_back(movie);
+
+        }
+
+        cout << "The 1st movies id is " << movies[0].id << ", name is " << movies[0].title << ", and it was made in " << movies[0].year << endl;
+    }
+    ifile.close();
     return 0;
 }
 
@@ -80,10 +109,14 @@ int main(){
 // file.open("name.csv")
 
 // What is a delimiter?
-// 
+// while(getline(ifile, str, ',')){
+// makes it seperate it out into more lines
 
 // How do you read an entire CSV?
-// 
+// while(getline(ifile, str, ',')){
+// all_info.push_back(str);
+// }
 
 // How do you turn items from a CSV into objects of a structure?
-// 
+//Structure_name variable;
+//variable.type_name = type_change_if_applicable(string_from_line);
