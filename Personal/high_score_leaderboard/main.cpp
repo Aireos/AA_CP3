@@ -14,7 +14,7 @@ using namespace std;
 enum menu {
     add = 1,
     display = 2,
-    exit = 3
+    exiting = 3
 };
 
 int main() {
@@ -34,25 +34,43 @@ int main() {
         }
         ifile.close();
     }
+    while(true){
+        cout << endl <<
+        "1. Add score\n" <<
+        "2. Display leaderboard\n" <<
+        "3. exit\n" <<
+        "selection: ";
+        int choice;
+        cin >> choice;
+        cout << endl;
+        if (cin.fail()) {
+            cout << "enter a number from 1 to 3 next time." << endl;
+            continue;
+        }
+        if(choice == menu::add){
+            cout << "What score did you get?: ";
+            int input;
+            cin >> input;
+            cout << '\n';
+            if (cin.fail()) {
+                cout << "That was not a number!" << '\n';
+                return 1;
+            }
 
-    cout << "What score did you get?: ";
-    int input;
-    cin >> input;
-    cout << '\n';
-    if (cin.fail()) {
-        cout << "That was not a number!" << '\n';
-        return 1;
+            file.push_back(input);
+        
+            sort(file.rbegin(), file.rend());
+        }else if(choice == menu::display){
+            cout << "High scores:" << '\n';
+            for (int i = 0; i < file.size(); i++) {
+                cout << file[i] << '\n';
+            }
+        }else if(choice == menu::exiting){
+            break;
+        }else{
+            cout << "enter a number from 1 to 3 next time." << endl;
+        }
     }
-
-    file.push_back(input);
-    
-    sort(file.rbegin(), file.rend());
-
-    cout << "High scores:" << '\n';
-    for (int i = 0; i < file.size(); i++) {
-        cout << file[i] << '\n';
-    }
-
     fstream ofile("high_scores.csv");
 
     if (!ofile.is_open()) {
