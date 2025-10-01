@@ -113,7 +113,7 @@ int main() {
         }
     }
     
-    fstream ofile("high_scores.csv", ios::out | ios::trunc);
+    fstream ofile("high_scores.csv");
 
     if (!ofile.is_open()) {
         cout << "Error saving to file." << '\n';
