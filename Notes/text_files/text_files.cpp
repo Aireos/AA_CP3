@@ -42,6 +42,8 @@ int main(){
     if(ofile.is_open()){
         ofile << "1, Terminator 1, 1984\n2, Terminator 1, 1991";
         ofile.close();
+    } else {
+        cout << "error opening file";
     }
 
     vector<string> all_info;
@@ -62,10 +64,14 @@ int main(){
             movies.push_back(movie);
 
         }
-
-        cout << "The 1st movies id is " << movies[0].id << ", name is " << movies[0].title << ", and it was made in " << movies[0].year << endl;
+        for (Movie i: movies){
+        cout << "The movies id is " << i.id << ", name is " << i.title << ", and it was made in " << i.year << endl;
+        }
+    } else {
+        cout << "error opening file";
     }
     ifile.close();
+
     return 0;
 }
 
