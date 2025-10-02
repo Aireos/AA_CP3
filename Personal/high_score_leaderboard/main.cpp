@@ -56,8 +56,6 @@ int main() {
         ifile.close();
     }
     
-    sort(file.begin(), file.end(), compareScores);
-
     while(true){
         cout << endl <<
         "1. Add score\n" <<
