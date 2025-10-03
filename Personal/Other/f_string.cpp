@@ -3,7 +3,7 @@
 #include <sstream>
 using namespace std;
 
-string f(stringstream f_string) {
+string f(vector<auto> f_string) {
     return f_string.str();
 }
 
