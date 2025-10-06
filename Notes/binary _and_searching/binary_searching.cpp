@@ -62,13 +62,13 @@ int main(){
 // When a title contains a space, which function should you use to read it properly?
 // 
 // Why might extra zeros be added to a string when converting a value without control?
-// 
+// because it goes to the maximum character limet. 
 // How does controlling the string conversion process benefit your program?
-// 
+// More understandable and storage is better
 // Give an example scenario where parsing a string would be necessary in a program.
-// 
+// to separate out a users response into two parts
 // Why are images, audio, and PDFs not readable by humans when stored in files?
-// 
+// because they are stored in 1's and 0's
 // What file extensions are commonly used to create binary files?
 // 
 // When writing to a binary file, what does the first parameter (reinterpret_cast<char*>(&numbers)) represent?
