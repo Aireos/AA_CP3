@@ -60,7 +60,7 @@ int main(){
 // How do you extract specific information from a string in programming?
 // by splitting it
 // When a title contains a space, which function should you use to read it properly?
-// 
+// getline
 // Why might extra zeros be added to a string when converting a value without control?
 // because it goes to the maximum character limet. 
 // How does controlling the string conversion process benefit your program?
@@ -70,20 +70,22 @@ int main(){
 // Why are images, audio, and PDFs not readable by humans when stored in files?
 // because they are stored in 1's and 0's
 // What file extensions are commonly used to create binary files?
-// 
+// #include <iomanip>
 // When writing to a binary file, what does the first parameter (reinterpret_cast<char*>(&numbers)) represent?
-// 
+// the conversion bvetween binary and the data types
 // Why does the binary file only take 12 bytes while the array of integers might be larger?
-// 
+// once its being saved as 1's and 0's it takes up less space
 // How does reading individual numbers from a binary file differ from reading the entire list at once?
-// 
+// it is faster but only with certain requirments
 // What is the main difference between sequential search and binary search?
-// 
+// goes through every one/ goes in groups
 // In which type of data structure is binary search most efficient?
-// 
+// ordered list
 // What is a key requirement for binary search to work correctly on a list?
-// 
+// it must be ordered
 // How does sequential search find an item in a list?
-// 
+// it checks the length
 // Why is binary search generally faster than sequential search for large, sorted lists?
+// because it elimates more items at the same time
 // What is a potential issue with converting values to strings without control?
+// having lotes of extra zeros after the value
