@@ -112,13 +112,15 @@ int main() {
                 cout << "No data was read or file could not be opened.\n";
             }
         }else if(choice == menu::view){
+            cout << "--------------------\n";
             for(int i = 0; i < movies.size(); i++){
                 cout << "Movie #: " << i+1 << endl;
-                cout << movies[i].name << endl;
-                cout << movies[i].director << endl;
-                cout << to_string(movies[i].year) << endl;
-                cout << movies[i].genre << endl;
-                cout << movies[i].rating << endl << endl;
+                cout << "Name: " << movies[i].name << endl;
+                cout << "Director(s): " << movies[i].director << endl;
+                cout << "Year published: " << to_string(movies[i].year) << endl;
+                cout << "Genre: " << movies[i].genre << endl;
+                cout << "Rating: " << movies[i].rating << endl;
+                cout << "--------------------\n";
             }
         }else if(choice == menu::add){
             movie_parts movie;
