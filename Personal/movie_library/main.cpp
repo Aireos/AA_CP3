@@ -268,6 +268,9 @@ int main() {
 
         }else if(choice == menu::exiting){
             break;
+        }else{
+            cout << "enter a number from 1 to 5 next time.\n";
+            continue;
         }
     }
 
