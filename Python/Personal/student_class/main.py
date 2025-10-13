@@ -1,22 +1,26 @@
 # AKA Student Class
 
+#defining the class for all the student info & parts
 class Student:
     def __init__(self,id=0,name="John Doe",grade = 100):
-        self.id = id
+        self.id = f"{id:03d}"
         self.name = name
         self.grade = grade
+    #returns the grade of the user
     def get_grade(self):
         return self.grade
+    #sets the grade of the user
     def set_grade(self, grade):
         self.grade = grade
+    #returns a string with all of the info for 
     def __str__(self):
         return f"ID: {self.id}, Name: {self.name}, Grade: {self.grade}"
 
-billy=Student(0o01,"Billy Bob",85)
-snap=Student(0o02,"Snap Crackle",76)
-pop=Student(0o03,"Pop Snap",66)
-crackle=Student(0o04,"Crackle Pop",58)
-bob=Student(0o05,"Bob Billy",49)
+billy=Student(1,"Billy Bob",85)
+snap=Student(2,"Snap Crackle",76)
+pop=Student(3,"Pop Snap",66)
+crackle=Student(4,"Crackle Pop",58)
+bob=Student(5,"Bob Billy",49)
 print()
 print("Initial student information:")
 print(billy)

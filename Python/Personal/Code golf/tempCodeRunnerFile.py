@@ -1,0 +1,1 @@
+exec('print("Hi", input());' * 5)
