@@ -1,4 +1,4 @@
-# AKA 
+# AKA Parent Child Classes
 
 class Animal():
 
@@ -67,11 +67,14 @@ print(nick)
 #    return super().__str__()
 
 # What are test cases?
-# same folder, seperate file
+# function that checks your code to meet certain conditions
 
 # Why do we use test cases?
-# 
+# to check your code to make sure it meets certian conditions
 
 # How do we create test cases?
 # test_filename.py
 # filename_test.py
+#import classes from main file
+#set up the name of the test case as the same as the test file
+#use insert keyword
