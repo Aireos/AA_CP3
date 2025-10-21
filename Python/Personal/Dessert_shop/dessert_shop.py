@@ -1,15 +1,15 @@
-# AKA
+# AKA Dessert Shop Part 1
 
 from dessert import *
 
 def main():
     ordering = Order()
-    ordering.add(Candy("Gummy Bears", 0.34, 1.25))
-    ordering.add(Candy("Candy Corn", 2.45, 0.36))
-    ordering.add(Cookies("Chocolate Chip", 6, 2.17))
-    ordering.add(IceCream("Mint Chocolate Chip", 2, 1.66))
-    ordering.add(IceCream("Cookies and Cream", 1, 1.52))
-    ordering.add(Sundae("Vanilla", 2, 1.00, "Fudge", 0.33))
+    ordering.add(Candy("Candy Corn", 1.5, 0.25))
+    ordering.add(Candy("Gummy Bears", .25, 0.35))
+    ordering.add(Cookie("Chocolate Chip", 6, 3.99))
+    ordering.add(IceCream("Pistachio", 2, .79))
+    ordering.add(Sundae("Vanilla", 3, .69, "Hot Fudge", 1.29))
+    ordering.add(Cookie("Oatmeal Raisin", 2, 3.45))
     for item in ordering.order:
         print(item.name)
     print(len(ordering))
