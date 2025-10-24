@@ -1,130 +1,301 @@
-#AKA Chess Pieces
+# AKA Chess Pieces
 
+from abc import ABC, abstractmethod
 from enum import Enum
 
 class Color(Enum):
     white = 1
     black = 2
 
-class Piece:
+class ChessPiece(ABC):
     def __init__(self, color, position):
         self.color = color
         self.position = position
-    
+
     def __repr__(self):
-        return f'{self.color.name}_{self.__class__.__name__} at {self.position}'
+        return f'{self.color.name.capitalize()} {self.__class__.__name__}'
+
+    @abstractmethod
+    def can_move(self, new_position, board):
+        pass
     
-    def is_valid_move(self, new_position, board):
-        raise NotImplementedError("Subclass must implement abstract method")
-
-class Pawn(Piece):
-    def is_valid_move(self, new_position, board):
-        # Implement specific pawn move logic here
+    @abstractmethod
+    def symbol(self):
         pass
 
-class Rook(Piece):
-    def is_valid_move(self, new_position, board):
-        # Implement specific rook move logic here
-        pass
+    def direction(self, start_pos, end_pos):
+        start_file, start_rank = ord(start_pos[0]), int(start_pos[1])
+        end_file, end_rank = ord(end_pos[0]), int(end_pos[1])
+        
+        file = end_file - start_file
+        d_rank = end_rank - start_rank
+        
+        return file, d_rank
 
-class Knight(Piece):
-    def is_valid_move(self, new_position, board):
-        # Implement specific knight move logic here
-        pass
+    def _is_path_clear(self, start_pos, end_pos, board):
+        start_file, start_rank = ord(start_pos[0]), int(start_pos[1])
+        end_file, end_rank = ord(end_pos[0]), int(end_pos[1])
 
-class Bishop(Piece):
-    def is_valid_move(self, new_position, board):
-        # Implement specific bishop move logic here
-        pass
+        file = 0
+        d_rank = 0
+        if start_file < end_file: file = 1
+        elif start_file > end_file: file = -1
 
-class Queen(Piece):
-    def is_valid_move(self, new_position, board):
-        # Implement specific queen move logic here
-        pass
+        if start_rank < end_rank: d_rank = 1
+        elif start_rank > end_rank: d_rank = -1
+            
+        current_file = start_file + file
+        current_rank = start_rank + d_rank
 
-class King(Piece):
-    def is_valid_move(self, new_position, board):
-        # Implement specific king move logic here
-        pass
+        while current_file != end_file or current_rank != end_rank:
+            position = f"{chr(current_file)}{current_rank}"
+            if board.get_piece_at(position):
+                return False
+            current_file += file
+            current_rank += d_rank
+        return True
 
-class Game:
+class Pawn(ChessPiece):
+    def __init__(self, color, position):
+        super().__init__(color, position)
+        self.first_move = True
+    
+    def can_move(self, new_position, board):
+        start_file, start_rank = ord(self.position[0]), int(self.position[1])
+        end_file, end_rank = ord(new_position[0]), int(new_position[1])
+        
+        file = end_file - start_file
+        d_rank = end_rank - start_rank
+        
+        direction = 1 if self.color == Color.white else -1
+
+        if file == 0 and d_rank == direction:
+            return not board.get_piece_at(new_position)
+        
+        if self.first_move and file == 0 and d_rank == 2 * direction:
+            return not board.get_piece_at(new_position) and self._is_path_clear(self.position, new_position, board)
+        
+        if abs(file) == 1 and d_rank == direction:
+            target_piece = board.get_piece_at(new_position)
+            return target_piece and target_piece.color != self.color
+            
+        return False
+
+    def symbol(self):
+        return "♙ " if self.color == Color.white else "♟ "
+
+class Rook(ChessPiece):
+    def can_move(self, new_position, board):
+        start_file, start_rank = ord(self.position[0]), int(self.position[1])
+        end_file, end_rank = ord(new_position[0]), int(new_position[1])
+
+        if start_file != end_file and start_rank != end_rank:
+            return False
+        
+        if not self._is_path_clear(self.position, new_position, board):
+            return False
+            
+        target_piece = board.get_piece_at(new_position)
+        return not target_piece or target_piece.color != self.color
+
+    def symbol(self):
+        return "♖ " if self.color == Color.white else "♜ "
+
+class Knight(ChessPiece):
+    def can_move(self, new_position, board):
+        start_file, start_rank = ord(self.position[0]), int(self.position[1])
+        end_file, end_rank = ord(new_position[0]), int(new_position[1])
+        
+        file = abs(end_file - start_file)
+        d_rank = abs(end_rank - start_rank)
+        
+        if not ((file == 1 and d_rank == 2) or (file == 2 and d_rank == 1)):
+            return False
+            
+        target_piece = board.get_piece_at(new_position)
+        return not target_piece or target_piece.color != self.color
+
+    def symbol(self):
+        return "♘ " if self.color == Color.white else "♞ "
+
+class Bishop(ChessPiece):
+    def can_move(self, new_position, board):
+        start_file, start_rank = ord(self.position[0]), int(self.position[1])
+        end_file, end_rank = ord(new_position[0]), int(new_position[1])
+        
+        file = abs(end_file - start_file)
+        d_rank = abs(end_rank - start_rank)
+        
+        if file != d_rank:
+            return False
+        
+        if not self._is_path_clear(self.position, new_position, board):
+            return False
+            
+        target_piece = board.get_piece_at(new_position)
+        return not target_piece or target_piece.color != self.color
+
+    def symbol(self):
+        return "♗ " if self.color == Color.white else "♝ "
+
+class Queen(ChessPiece):
+    def can_move(self, new_position, board):
+        start_file, start_rank = ord(self.position[0]), int(self.position[1])
+        end_file, end_rank = ord(new_position[0]), int(new_position[1])
+        
+        file = abs(end_file - start_file)
+        d_rank = abs(end_rank - start_rank)
+        
+        is_linear = (file == 0 or d_rank == 0)
+        is_diagonal = (file == d_rank)
+        
+        if not (is_linear or is_diagonal):
+            return False
+        
+        if not self._is_path_clear(self.position, new_position, board):
+            return False
+            
+        target_piece = board.get_piece_at(new_position)
+        return not target_piece or target_piece.color != self.color
+
+    def symbol(self):
+        return "♕ " if self.color == Color.white else "♛ "
+
+class King(ChessPiece):
+    def can_move(self, new_position, board):
+        start_file, start_rank = ord(self.position[0]), int(self.position[1])
+        end_file, end_rank = ord(new_position[0]), int(new_position[1])
+        
+        file = abs(end_file - start_file)
+        d_rank = abs(end_rank - start_rank)
+        
+        if not (file <= 1 and d_rank <= 1):
+            return False
+            
+        target_piece = board.get_piece_at(new_position)
+        return not target_piece or target_piece.color != self.color
+
+    def symbol(self):
+        return "♔ " if self.color == Color.white else "♚ "
+
+class ChessGame:
     def __init__(self):
-        self.board = self.create_board()
-        self.white_pieces = self.initialize_white_pieces()
-        self.black_pieces = self.initialize_black_pieces()
-        self.place_pieces_on_board()
+        self.board = {f"{chr(file)}{rank}": None for file in range(ord('a'), ord('h') + 1) for rank in range(1, 9)}
+        self.white_pieces = []
+        self.black_pieces = []
+        self._initialize_pieces()
+        self._place_pieces_on_board()
 
-    def create_board(self):
-        return {f"{chr(file)}{rank}": None for file in range(ord('a'), ord('h') + 1) for rank in range(1, 9)}
-    
-    def initialize_white_pieces(self):
-        pieces = []
-        for file in "abcdefgh":
-            pieces.append(Pawn(Color.white, f"{file}2"))
-        pieces.append(Rook(Color.white, "a1"))
-        pieces.append(Knight(Color.white, "b1"))
-        pieces.append(Bishop(Color.white, "c1"))
-        pieces.append(Queen(Color.white, "d1"))
-        pieces.append(King(Color.white, "e1"))
-        pieces.append(Bishop(Color.white, "f1"))
-        pieces.append(Knight(Color.white, "g1"))
-        pieces.append(Rook(Color.white, "h1"))
-        return pieces
+    def _initialize_pieces(self):
+        self.white_pieces.extend([Pawn(Color.white, f"{file}2") for file in "abcdefgh"])
+        self.white_pieces.extend([
+            Rook(Color.white, "a1"), Knight(Color.white, "b1"), Bishop(Color.white, "c1"),
+            Queen(Color.white, "d1"), King(Color.white, "e1"), Bishop(Color.white, "f1"),
+            Knight(Color.white, "g1"), Rook(Color.white, "h1")
+        ])
 
-    def initialize_black_pieces(self):
-        pieces = []
-        for file in "abcdefgh":
-            pieces.append(Pawn(Color.black, f"{file}7"))
-        pieces.append(Rook(Color.black, "a8"))
-        pieces.append(Knight(Color.black, "b8"))
-        pieces.append(Bishop(Color.black, "c8"))
-        pieces.append(Queen(Color.black, "d8"))
-        pieces.append(King(Color.black, "e8"))
-        pieces.append(Bishop(Color.black, "f8"))
-        pieces.append(Knight(Color.black, "g8"))
-        pieces.append(Rook(Color.black, "h8"))
-        return pieces
+        self.black_pieces.extend([Pawn(Color.black, f"{file}7") for file in "abcdefgh"])
+        self.black_pieces.extend([
+            Rook(Color.black, "a8"), Knight(Color.black, "b8"), Bishop(Color.black, "c8"),
+            Queen(Color.black, "d8"), King(Color.black, "e8"), Bishop(Color.black, "f8"),
+            Knight(Color.black, "g8"), Rook(Color.black, "h8")
+        ])
 
-    def place_pieces_on_board(self):
+    def _place_pieces_on_board(self):
         for piece in self.white_pieces + self.black_pieces:
             self.board[piece.position] = piece
 
-    def white_move(self, piece_position, new_position):
-        if new_position not in self.board:
-            print("That is not a correct location!")
-            return False
-        
-        piece = self.board.get(piece_position)
-        if not piece or piece.color != Color.white:
-            print("No white piece at that starting position!")
+    def get_piece_at(self, position):
+        return self.board.get(position)
+
+    def move_piece(self, start_pos, end_pos):
+        piece = self.get_piece_at(start_pos)
+        if not piece:
+            print(f"No piece found at {start_pos}")
             return False
 
+        if not piece.can_move(end_pos, self):
+            print(f"Invalid move for {piece} from {start_pos} to {end_pos}")
+            return False
+
+        target_piece = self.get_piece_at(end_pos)
+        if target_piece:
+            self.remove_piece(target_piece)
+
+        self.board[start_pos] = None
+        piece.position = end_pos
+        self.board[end_pos] = piece
+
+        if isinstance(piece, Pawn) and piece.first_move:
+            piece.first_move = False
+        
+        print(f"Moved {piece} from {start_pos} to {end_pos}")
+        return True
+
+    def remove_piece(self, piece):
+        if piece.color == Color.white:
+            self.white_pieces.remove(piece)
+        else:
+            self.black_pieces.remove(piece)
+        print(f"Captured: {piece}")
+    
     def print_board(self):
-        board_rows = []
+        print("\n  " + "  ".join("abcdefgh"))
         for rank in range(8, 0, -1):
-            row = []
+            row = [str(rank)]
             for file in "abcdefgh":
                 pos = f"{file}{rank}"
-                piece = self.board[pos]
-                if piece:
-                    symbol = self.get_piece_symbol(piece)
-                    row.append(symbol)
-                else:
-                    row.append(" . ")
-            board_rows.append("".join(row))
-        print("\n".join(board_rows))
-        
-    def get_piece_symbol(self, piece):
-        symbols = {
-            (Color.white, "Pawn"): " ♙ ", (Color.black, "Pawn"): " ♟ ",
-            (Color.white, "Rook"): " ♖ ", (Color.black, "Rook"): " ♜ ",
-            (Color.white, "Knight"): " ♘ ", (Color.black, "Knight"): " ♞ ",
-            (Color.white, "Bishop"): " ♗ ", (Color.black, "Bishop"): " ♝ ",
-            (Color.white, "Queen"): " ♕ ", (Color.black, "Queen"): " ♛ ",
-            (Color.white, "King"): " ♔ ", (Color.black, "King"): " ♚ ",
-        }
-        return symbols.get((piece.color, piece.__class__.__name__), " ? ")
+                piece = self.get_piece_at(pos)
+                row.append(piece.symbol() if piece else ". ")
+            print(" ".join(row))
 
-if __name__ == "__main__":
-    game = Game()
+def main():
+    game = ChessGame()
+    
+    print("Initial Board:")
     game.print_board()
+    print("-------------------------------------")
+    
+    print("--- Demonstrating 5 different piece moves ---")
+    
+    game.move_piece("a2", "a4")
+    print("\nBoard after a2 -> a4:")
+    game.print_board()
+    print("-------------------------------------")
+
+    game.move_piece("b8", "c6")
+    print("\nBoard after b8 -> c6:")
+    game.print_board()
+    print("-------------------------------------")
+    
+    game.move_piece("c1", "f4")
+    print("\nBoard after c1 -> f5:")
+    game.print_board()
+    print("-------------------------------------")
+    
+    game.move_piece("d7", "d5")
+    print("\nBoard after d7 -> d5:")
+    game.print_board()
+    print("-------------------------------------")
+
+    game.move_piece("a4", "a5")
+    print("\nBoard after a4 -> a5:")
+    game.print_board()
+    print("-------------------------------------")
+
+    game.move_piece("b7", "b6")
+    print("\nBoard after b8 -> a5:")
+    game.print_board()
+    print("-------------------------------------")
+
+    game.move_piece("b6", "a5")
+    print("\nBoard after b8 -> a5:")
+    game.print_board()
+    print("-------------------------------------")
+
+    game.move_piece("d1", "d3")
+    print("\nBoard after d1 -> d3:")
+    game.print_board()
+    print("-------------------------------------")
+
+main()
