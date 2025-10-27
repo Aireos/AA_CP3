@@ -1,5 +1,3 @@
-# AKA Chess Pieces
-
 from abc import ABC, abstractmethod
 from enum import Enum
 
@@ -22,15 +20,6 @@ class ChessPiece(ABC):
     @abstractmethod
     def symbol(self):
         pass
-
-    def direction(self, start_pos, end_pos):
-        start_file, start_rank = ord(start_pos[0]), int(start_pos[1])
-        end_file, end_rank = ord(end_pos[0]), int(end_pos[1])
-        
-        file = end_file - start_file
-        d_rank = end_rank - start_rank
-        
-        return file, d_rank
 
     def _is_path_clear(self, start_pos, end_pos, board):
         start_file, start_rank = ord(start_pos[0]), int(start_pos[1])
@@ -80,6 +69,9 @@ class Pawn(ChessPiece):
             return target_piece and target_piece.color != self.color
             
         return False
+
+    def promote(self):
+        return Queen(self.color, self.position)  # Promotes to a Queen
 
     def symbol(self):
         return "♙ " if self.color == Color.white else "♟ "
@@ -185,6 +177,7 @@ class ChessGame:
         self.black_pieces = []
         self._initialize_pieces()
         self._place_pieces_on_board()
+        self.current_turn = Color.white
 
     def _initialize_pieces(self):
         self.white_pieces.extend([Pawn(Color.white, f"{file}2") for file in "abcdefgh"])
@@ -210,8 +203,8 @@ class ChessGame:
 
     def move_piece(self, start_pos, end_pos):
         piece = self.get_piece_at(start_pos)
-        if not piece:
-            print(f"No piece found at {start_pos}")
+        if not piece or piece.color != self.current_turn:
+            print(f"No piece found at {start_pos} or it's not your turn.")
             return False
 
         if not piece.can_move(end_pos, self):
@@ -226,21 +219,89 @@ class ChessGame:
         piece.position = end_pos
         self.board[end_pos] = piece
 
-        if isinstance(piece, Pawn) and piece.first_move:
-            piece.first_move = False
+        if isinstance(piece, Pawn) and (end_pos[1] == '8' or end_pos[1] == '1'):
+            piece = piece.promote()
+            self.board[end_pos] = piece
         
+        if self.is_king_in_check(self.current_turn):
+            print(f"Move puts {self.current_turn.name.capitalize()}'s king in check! Move is invalid.")
+            piece.position = start_pos
+            self.board[start_pos] = piece
+            self.board[end_pos] = None
+            return False
+
+        if self.is_checkmate(self.current_turn):
+            print(f"Checkmate! {self.current_turn.name.capitalize()} loses!")
+            return True
+        
+        if self.is_stalemate(self.current_turn):
+            print("Stalemate! The game is drawn.")
+            return True
+
+        self.current_turn = Color.black if self.current_turn == Color.white else Color.white
         print(f"Moved {piece} from {start_pos} to {end_pos}")
-        return True
+        return False
 
     def remove_piece(self, piece):
         if piece.color == Color.white:
             self.white_pieces.remove(piece)
         else:
             self.black_pieces.remove(piece)
-        if piece == "White King" or "Black King":
-            return False
         print(f"Captured: {piece}")
-    
+
+    def is_king_in_check(self, color):
+        king_position = None
+        for piece in (self.white_pieces if color == Color.white else self.black_pieces):
+            if isinstance(piece, King):
+                king_position = piece.position
+                break
+
+        if not king_position:
+            return False
+
+        for piece in (self.black_pieces if color == Color.white else self.white_pieces):
+            if piece.can_move(king_position, self):
+                return True
+        return False
+
+    def is_checkmate(self, color):
+        if not self.is_king_in_check(color):
+            return False
+
+        for piece in (self.white_pieces if color == Color.white else self.black_pieces):
+            for file in "abcdefgh":
+                for rank in range(1, 9):
+                    new_position = f"{file}{rank}"
+                    if piece.can_move(new_position, self):
+                        original_position = piece.position
+                        self.board[original_position] = None
+                        piece.position = new_position
+                        self.board[new_position] = piece
+
+                        if not self.is_king_in_check(color):
+                            piece.position = original_position
+                            self.board[original_position] = piece
+                            self.board[new_position] = None
+                            return False
+
+                        piece.position = original_position
+                        self.board[original_position] = piece
+                        self.board[new_position] = None
+        
+        return True
+
+    def is_stalemate(self, color):
+        if self.is_king_in_check(color):
+            return False 
+
+        for piece in (self.white_pieces if color == Color.white else self.black_pieces):
+            for file in "abcdefgh":
+                for rank in range(1, 9):
+                    new_position = f"{file}{rank}"
+                    if piece.can_move(new_position, self):
+                        return False
+        return True
+
     def print_board(self):
         print("\n  " + "  ".join("abcdefgh"))
         for rank in range(8, 0, -1):
@@ -253,8 +314,7 @@ class ChessGame:
 
 def main():
     game = ChessGame()
-    game.print_board()  # Show the initial board
-
+    game.print_board()
     while True:
         start_pos = input("What piece do you want to move? (type position of piece)(ex: a1): ")
         if start_pos not in game.board:
@@ -266,8 +326,9 @@ def main():
             print("Invalid position. Please enter a valid position (e.g., a3).")
             continue
 
-        game.move_piece(start_pos, end_pos)
-            
+        result = game.move_piece(start_pos, end_pos)
+        if result:
+            break
         game.print_board()
 
 main()
