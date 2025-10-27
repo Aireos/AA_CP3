@@ -237,6 +237,8 @@ class ChessGame:
             self.white_pieces.remove(piece)
         else:
             self.black_pieces.remove(piece)
+        if piece == "White King" or "Black King":
+            return False
         print(f"Captured: {piece}")
     
     def print_board(self):
@@ -251,51 +253,21 @@ class ChessGame:
 
 def main():
     game = ChessGame()
-    
-    print("Initial Board:")
-    game.print_board()
-    print("-------------------------------------")
-    
-    print("--- Demonstrating 5 different piece moves ---")
-    
-    game.move_piece("a2", "a4")
-    print("\nBoard after a2 -> a4:")
-    game.print_board()
-    print("-------------------------------------")
+    game.print_board()  # Show the initial board
 
-    game.move_piece("b8", "c6")
-    print("\nBoard after b8 -> c6:")
-    game.print_board()
-    print("-------------------------------------")
-    
-    game.move_piece("c1", "f4")
-    print("\nBoard after c1 -> f5:")
-    game.print_board()
-    print("-------------------------------------")
-    
-    game.move_piece("d7", "d5")
-    print("\nBoard after d7 -> d5:")
-    game.print_board()
-    print("-------------------------------------")
+    while True:
+        start_pos = input("What piece do you want to move? (type position of piece)(ex: a1): ")
+        if start_pos not in game.board:
+            print("Invalid position. Please enter a valid position (e.g., a1).")
+            continue
 
-    game.move_piece("a4", "a5")
-    print("\nBoard after a4 -> a5:")
-    game.print_board()
-    print("-------------------------------------")
+        end_pos = input("Where do you want to move it? (type position)(ex: a3): ")
+        if end_pos not in game.board:
+            print("Invalid position. Please enter a valid position (e.g., a3).")
+            continue
 
-    game.move_piece("b7", "b6")
-    print("\nBoard after b8 -> a5:")
-    game.print_board()
-    print("-------------------------------------")
-
-    game.move_piece("b6", "a5")
-    print("\nBoard after b8 -> a5:")
-    game.print_board()
-    print("-------------------------------------")
-
-    game.move_piece("d1", "d3")
-    print("\nBoard after d1 -> d3:")
-    game.print_board()
-    print("-------------------------------------")
+        game.move_piece(start_pos, end_pos)
+            
+        game.print_board()
 
 main()
