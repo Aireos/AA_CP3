@@ -1,2 +1,4 @@
-for i in range(8):
-    print(i)
+import tabulate
+
+data = [["Alex",1,"hi"],["Alex",1,"hi"],["Alex",1,"hi"]]
+print(tabulate.tabulate(data))

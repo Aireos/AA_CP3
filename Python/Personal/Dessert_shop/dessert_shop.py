@@ -1,6 +1,7 @@
 # AKA Dessert Shop Part 1
 
 from dessert import *
+import tabulate
 
 def main():
     ordering = Order()
@@ -13,6 +14,13 @@ def main():
     for item in ordering.order:
         print(item.name)
     print(len(ordering))
+    list = [["Candy"],["Cookie"],["IceCream"],["Sundae"]]
+    list[0].append(ordering[0])
+    list[0].append(ordering[0])
+    list[0].append(ordering[0])
+    list[0].append(ordering[0])
+    list[0].append(ordering[0])
+    list[0].append(ordering[0])
 
 main()
     

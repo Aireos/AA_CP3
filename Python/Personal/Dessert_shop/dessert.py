@@ -1,14 +1,22 @@
 # AKA Dessert Shop Part 1
 
-class DessertItem():
+from abc import ABC, abstractmethod
+
+class DessertItem(ABC):
     def __init__(self,name = ""):
         self.name = name
 
 class Candy(DessertItem):
-    def __init__(self,name = "",price_per_pound=0.0,candy_weight=0.0):
+    def __init__(self,name = "",price_per_pound=0.0,candy_weight=0.0,tax_percent=7.25):
         super().__init__(name)
         self.price_per_pound = price_per_pound
         self.candy_weight = candy_weight
+        self.tax_percent = tax_percent
+    @abstractmethod
+    def calculate_cost(self):
+        return(float(self.price_per_pound*self.candy_weight))
+    def calculate_tax(self): 
+        return(float(calculate_cost(self)))
 
 class IceCream(DessertItem):
     def __init__(self,name = "",price_per_scoop=0.0,scoop_count=0):
