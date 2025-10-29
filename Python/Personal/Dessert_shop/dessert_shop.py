@@ -15,12 +15,19 @@ def main():
         print(item.name)
     print(len(ordering))
     list = [["Candy"],["Cookie"],["IceCream"],["Sundae"]]
-    list[0].append(ordering[0])
-    list[0].append(ordering[0])
-    list[0].append(ordering[0])
-    list[0].append(ordering[0])
-    list[0].append(ordering[0])
-    list[0].append(ordering[0])
+    list[0].append(ordering.order[0])
+    list[0].append(ordering.order[1])
+    list[1].append(ordering.order[2])
+    list[2].append(ordering.order[3])
+    list[3].append(ordering.order[4])
+    list[2].append(ordering.order[5])
+    list_of_lists = []
+    for i in ordering.order:
+        list_of_lists.append([i.name,i.calculate_cost(),i.calculate_tax()])
+    list_of_lists.append(["Subtotal",ordering.order_cost(), ordering.order_tax()])
+    list_of_lists.append(["Total","",ordering.order_cost()*ordering.order_tax()])
+    list_of_lists.append(["Number of items","",ordering.__len__()])
+    print(tabulate.tabulate(list_of_lists, headers=["item","cost","tax"]))
 
 main()
     
