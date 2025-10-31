@@ -59,10 +59,10 @@ while True:
 # screen = pygame.display.set_mode((max_x, max_y))
 
 # How are objects placed on the screen in pygame?
-# 
+# pygame.draw.circle(screen, (250,0,0), (pos_x, pos_y), 10)
 
 # What events can I listen for in pygame? What do those events do?
-# 
+# pygame.key.get_pressed() | tells what key wsa just pressed by user
 
 # How can I detect collision with pygame?
 # 
