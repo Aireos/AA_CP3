@@ -3,6 +3,8 @@
 import pygame
 import random
 import math
+import time
+from pygame import mixer
 
 pygame.init()
 
@@ -17,12 +19,13 @@ pygame_icon = pygame.image.load('Python/Personal/space_invadors/resources\\ufo-1
 pygame.display.set_icon(pygame_icon)
 
 class Player:
-    def __init__(self, x=max_x/2, change = 0, shoot = False):
+    def __init__(self, x=max_x/2, change = 0, shoot = False, score = 0):
         self.image = pygame.image.load('Python/Personal/space_invadors/resources\\spaceship.png')
         self.x = x
         self.y = max_y - self.image.get_height()
         self.change = change
         self.shoot = shoot
+        self.score = score
 
     def player_set(self):
         screen.blit(self.image, (self.x, self.y))
@@ -64,9 +67,10 @@ class Enemy:
     
     def is_hit(self, bullet):
         distance = math.sqrt((self.x - bullet.x)**2 + (self.y - bullet.y)**2)
-        if distance < self.image.get_width():
-            pass
-
+        if distance < ((self.image.get_width())/2)+((bullet.image.get_width())/2):
+            return True
+        return False
+    
 class Bullet:
     def __init__(self,x=0,y=0, change = speed):
         self.state = "ready"
@@ -85,11 +89,19 @@ class Bullet:
         screen.blit(self.image, (self.x, self.y))
 
 player = Player()
-enemy = Enemy()
+enemys = [Enemy()]
 bullet = Bullet()
 level = 1
 
+background = pygame.image.load('Python/Personal/space_invadors/resources\\background-1.jpg')
+backround = pygame.transform.scale(background, (max_x, max_y))
+
+score_font = pygame.font.Font('Python/Personal/space_invadors/resources\\Sterion-BLLld.ttf',32)
+score_display = score_font.render(f"Score: {player.score}", True, (255,255,255))
+
 while running:
+
+    mixer.Sound("Python/Personal/space_invadors/resources\\background.wav").play()
 
     screen.fill((0,0,0))
 
@@ -112,6 +124,7 @@ while running:
                 if bullet.state == "ready":
                     bullet.x = player.x + player.image.get_width() / 2 - bullet.image.get_width() / 2
                     bullet.y = player.y
+                    mixer.Sound("Python/Personal/space_invadors/resources\\laser.wav").play()
                     bullet.state = "fired"
 
 
@@ -121,12 +134,40 @@ while running:
                 player.change = 0
 
     player.move()
-    running = enemy.move()
+    for enemy in enemys:
+        if enemy.move() == False:
+            running = False
+
     if bullet.state == "fired": 
         bullet.move()
+
+        for enemy in enemys:
+
+            if enemy.is_hit(bullet):
+                bullet.state = "ready"
+
+                mixer.Sound("Python/Personal/space_invadors/resources\\explosion.wav").play()
+
+                score+=1
+                enemys.remove(enemy)
+
+                if enemys == []:
+                    level += 1
+                
+                    for i in range(level):
+                        enemys.append(Enemy())
+                        time.sleep(0.25)
+
+    screen.blit(background, (0, 0))
+    screen.blit(score_display, (10, 10))
+
+    if bullet.state == "fired":
         bullet.bullet_set()
 
     player.player_set()
     enemy.enemy_set()
 
     pygame.display.flip()
+
+game_over_font = pygame.font.Font('Python/Personal/space_invadors/resources\\Sterion-BLLld.ttf',32)
+game_over = score_font.render(f"Game Over", True, (255,255,255))
