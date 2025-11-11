@@ -65,7 +65,12 @@ while True:
 # pygame.key.get_pressed() | tells what key wsa just pressed by user
 
 # How can I detect collision with pygame?
-# 
+# by checking how far away each object is away from eachother
+#distance = math.sqrt((self.x - bullet.x)**2 + (self.y - bullet.y)**2)
+#       if distance < ((self.image.get_width())/2)+((bullet.image.get_width())/2):
+#           return True
+#       return False
 
 # How do you add sounds in pygame?
-# 
+# import .wav files and import mixer
+#  mixer.Sound("Python/Personal/space_invadors/resources/laser.wav").play()
